@@ -1,0 +1,25 @@
+{
+  "name": "cqrs-admin",
+  "version": "1.0.0",
+  "description": "node api using cqrs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js"
+  },
+  "author": "Marco Antonio Carrillo Osuna",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.15"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.11",
+    "nodemon": "^2.0.22",
+    "typescript": "^5.0.4"
+  }
+}

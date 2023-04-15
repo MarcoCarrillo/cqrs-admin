@@ -1,0 +1,12 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "username": "root",
+    "password": "admin",
+    "database": "node_admin",
+    "entities": [
+        "src/entity/*.js"
+    ],
+    "logging": false,
+    "synchronize": true
+}
