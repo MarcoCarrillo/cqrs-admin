@@ -17,6 +17,41 @@ createConnection().then(db => {
         res.json(products);
     });
 
+    app.post('/api/products', async (req: Request, res: Response) => {
+        const product = productRepository.create(req.body);
+        const result = await productRepository.save(product);
+
+        return res.send(result)
+    });
+
+    app.get('/api/products/:id', async (req: Request, res: Response) => {
+        const product = await productRepository.findOneBy({ id: req.params.id });
+
+        return res.send(product);
+    });
+
+    app.put('/api/products/:id', async (req: Request, res: Response) => {
+        const product = await productRepository.findOneBy({ id: req.params.id });
+        productRepository.merge(product, req.body);
+
+        const result = await productRepository.save(product);
+        return res.send(result);
+    });
+
+    app.delete('/api/products/:id', async (req: Request, res: Response) => {
+        const result = await productRepository.delete(req.params.id);
+        
+        return res.send(result);
+    });
+    
+    app.post('/api/products/:id/like', async (req: Request, res: Response) => {
+        const product = await productRepository.findOneBy({ id: req.params.id });
+        product.likes++;
+
+        const result = await productRepository.save(product);
+        return res.send(result);
+    });
+
     const PORT = 8000;
 
     console.log(`Listening to port: ${PORT}`);

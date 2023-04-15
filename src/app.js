@@ -57,6 +57,71 @@ var product_1 = require("./entity/product");
             }
         });
     }); });
+    app.post('/api/products', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var product, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    product = productRepository.create(req.body);
+                    return [4 /*yield*/, productRepository.save(product)];
+                case 1:
+                    result = _a.sent();
+                    return [2 /*return*/, res.send(result)];
+            }
+        });
+    }); });
+    app.get('/api/products/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var product;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, productRepository.findOneBy({ id: req.params.id })];
+                case 1:
+                    product = _a.sent();
+                    return [2 /*return*/, res.send(product)];
+            }
+        });
+    }); });
+    app.put('/api/products/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var product, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, productRepository.findOneBy({ id: req.params.id })];
+                case 1:
+                    product = _a.sent();
+                    productRepository.merge(product, req.body);
+                    return [4 /*yield*/, productRepository.save(product)];
+                case 2:
+                    result = _a.sent();
+                    return [2 /*return*/, res.send(result)];
+            }
+        });
+    }); });
+    app.delete('/api/products/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, productRepository.delete(req.params.id)];
+                case 1:
+                    result = _a.sent();
+                    return [2 /*return*/, res.send(result)];
+            }
+        });
+    }); });
+    app.post('/api/products/:id/like', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var product, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, productRepository.findOneBy({ id: req.params.id })];
+                case 1:
+                    product = _a.sent();
+                    product.likes++;
+                    return [4 /*yield*/, productRepository.save(product)];
+                case 2:
+                    result = _a.sent();
+                    return [2 /*return*/, res.send(result)];
+            }
+        });
+    }); });
     var PORT = 8000;
     console.log("Listening to port: ".concat(PORT));
     app.listen(PORT);
