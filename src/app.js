@@ -75,6 +75,7 @@ var amqp = require("amqplib/callback_api");
                             return [4 /*yield*/, productRepository.save(product)];
                         case 1:
                             result = _a.sent();
+                            channel.sendToQueue('product_created', Buffer.from(JSON.stringify(result)));
                             return [2 /*return*/, res.send(result)];
                     }
                 });
@@ -101,6 +102,7 @@ var amqp = require("amqplib/callback_api");
                             return [4 /*yield*/, productRepository.save(product)];
                         case 2:
                             result = _a.sent();
+                            channel.sendToQueue('product_updated', Buffer.from(JSON.stringify(result)));
                             return [2 /*return*/, res.send(result)];
                     }
                 });
@@ -112,6 +114,7 @@ var amqp = require("amqplib/callback_api");
                         case 0: return [4 /*yield*/, productRepository.delete(req.params.id)];
                         case 1:
                             result = _a.sent();
+                            channel.sendToQueue('product_deleted', Buffer.from(JSON.stringify(req.params.id)));
                             return [2 /*return*/, res.send(result)];
                     }
                 });
@@ -134,6 +137,10 @@ var amqp = require("amqplib/callback_api");
             var PORT = 8000;
             console.log("Listening to port: ".concat(PORT));
             app.listen(PORT);
+            process.on('beforeExit', function () {
+                console.log('Closing');
+                connection.close();
+            });
         });
     });
 });

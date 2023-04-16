@@ -32,7 +32,7 @@ createConnection().then(db => {
             app.post('/api/products', async (req: Request, res: Response) => {
                 const product = productRepository.create(req.body);
                 const result = await productRepository.save(product);
-
+                channel.sendToQueue('product_created', Buffer.from(JSON.stringify(result)));
                 return res.send(result)
             });
 
@@ -47,12 +47,15 @@ createConnection().then(db => {
                 productRepository.merge(product, req.body);
 
                 const result = await productRepository.save(product);
+                
+                channel.sendToQueue('product_updated', Buffer.from(JSON.stringify(result)));
                 return res.send(result);
             });
 
             app.delete('/api/products/:id', async (req: Request, res: Response) => {
                 const result = await productRepository.delete(req.params.id);
                 
+                channel.sendToQueue('product_deleted', Buffer.from(JSON.stringify(req.params.id)));
                 return res.send(result);
             });
             
@@ -69,6 +72,10 @@ createConnection().then(db => {
             console.log(`Listening to port: ${PORT}`);
 
             app.listen(PORT);
+            process.on('beforeExit', () => {
+                console.log('Closing');
+                connection.close()
+            });
         });
     }); 
 });
